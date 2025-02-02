@@ -1,0 +1,7 @@
+<h3><img src="{{product.length > 0 ? product[0].imageUrl : ''}}" style="width: 70px;height: 70px" class="mr-3" />{{product.length > 0 ? product[0].name : ''}}</h3>
+<p>Distribuidora: {{product.length > 0 ? product[0].marketPlace.toUpperCase() : ''}}</p>
+<p>Avaliações: {{product.length > 0 ? product[0].reviews : ''}}</p>
+<p>Nota de Avaliação: {{product.length > 0 ? product[0].reviewsTotal : ''}}</p>
+<div class="chartStyle">
+    <p-chart type="line" [data]="data" [options]="options" class="h-[30rem]" />
+</div>

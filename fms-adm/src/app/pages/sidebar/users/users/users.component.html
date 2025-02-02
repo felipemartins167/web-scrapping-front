@@ -1,0 +1,47 @@
+<div class="surface-ground">
+    <div class="grid">
+        <div class="col-3 md:col-3 xl:col-12 p-2">
+            <div class="flex align-items-center gap-2">
+                <input pInputText id="search" aria-describedby="search-help" [(ngModel)]="search" style="flex: 1;" />
+                <p-button label="Buscar" variant="text" [raised]="true" (onClick)="doSearch()"></p-button>
+            </div>
+            <small id="search-help">Digite pelo menos 3 letras para iniciar a busca.</small>
+        </div>
+    </div>
+    <div class="grid">
+        @for (user of userList; track user.id) {
+        <div class="col-6 md:col-6 xl:col-4 p-3">
+            <div class="surface-card shadow-2 border-round p-4">
+                <div class="flex border-bottom-1 surface-border pb-4">
+                    <img src="assets/images/avatar_standard.webp" style="width: 70px;height: 70px" class="mr-3" />
+                    <div class="flex flex-column align-items-start">
+                        <span class="text-xl text-900 font-medium mb-1">{{ user.name }}</span>
+                        <span class="text-600 font-medium mb-2">{{ user.email }}</span>
+                        @for (role of user.roles; track role.id) {
+                        <span class="text-600 font-medium mb-2">{{ role.name }}</span>
+                        }
+                    </div>
+                </div>
+                <div class="flex justify-content-between pt-4">
+                    <button pButton pRipple label="Detalhes" icon="pi pi-address-book"
+                        class="p-button-outlined p-button-secondary w-6 mr-2"></button>
+                    <button pButton pRipple label="Follow" icon="pi pi-user-plus"
+                        class="p-button-outlined p-button-secondary w-6 ml-2"></button>
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12">
+            <div class="surface-card shadow-2 border-round p-4">
+                <div class="flex justify-content-center align-items-center">
+                    <span class="text-600">Nenhum usuário encontrado.</span>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="card flex justify-center">
+        <p-paginator (onPageChange)="doSearch()" [first]="first" [rows]="rows" [totalRecords]="totalItems"
+            [rowsPerPageOptions]="[5, 10, 20]" />
+    </div>
+</div>

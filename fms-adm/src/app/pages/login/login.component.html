@@ -1,0 +1,61 @@
+<p-toast position="center" />
+<div class="flex">
+    <div class="surface-section w-full md:w-6 p-6 md:p-8">
+        <div class="mb-5">
+            <img src="/assets/images/logo_icon.png" alt="Ícone Logo" height="50" class="mb-3">
+            <div class="text-900 text-3xl font-medium mb-3">Bem-vindo</div>
+            <span class="text-600 font-medium mr-2">Não possui conta?</span>
+            <a class="font-medium no-underline text-blue-500 cursor-pointer">Criar conta!</a>
+        </div>
+        <div>
+            <form [formGroup]="loginForm">
+                <label for="email" class="block text-900 font-medium mb-2">E-mail</label>
+                <input id="email" formControlName="email" type="text" placeholder="E-mail" pInputText
+                    class="w-full mb-3 p-3">
+                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                <div class="error-message">
+                    E-mail inválid.
+                </div>
+                }
+
+                <label for="password" class="block text-900 font-medium mb-2">Senha</label>
+                <input id="password" formControlName="password" type="password" placeholder="Senha" pInputText
+                    class="w-full mb-3 p-3">
+                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                @if (loginForm.get('password')?.errors?.["length"]) {
+                <div class="error-message">
+                    A senha deve ter entre 5 e 20 caracteres.
+                </div>
+                } @else if (loginForm.get('password')?.errors?.["uppercase"]) {
+                <div class="error-message">
+                    A senha precisa incluir pelo menos uma letra maiúscula.
+                </div>
+                } @else if (loginForm.get('password')?.errors?.["lowercase"]) {
+                <div class="error-message">
+                    A senha precisa incluir pelo menos uma letra minúscula.
+                </div>
+                } @else if (loginForm.get('password')?.errors?.["number"]) {
+                <div class="error-message">
+                    A senha precisa incluir pelo menos um número.
+                </div>
+                } @else if (loginForm.get('password')?.errors?.["specialChar"]) {
+                <div class="error-message">
+                    A senha precisa incluir pelo menos um caractere especial, como !#$%.
+                </div>
+                }
+                }
+                <div class="flex align-items-center justify-content-between mb-6">
+                    <div class="flex align-items-center">
+                        <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+                        <label for="rememberme2">Lembrar Senha</label>
+                    </div>
+                    <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Esqueceu sua
+                        senha?</a>
+                </div>
+                <button pButton pRipple label="Login" icon="pi pi-user" class="w-full p-3" (click)="doLogin()"></button>
+            </form>
+        </div>
+    </div>
+    <div class="hidden md:block w-6 bg-no-repeat bg-cover" style="background-image: url('/assets/images/logo.png')">
+    </div>
+</div>

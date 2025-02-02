@@ -1,0 +1,36 @@
+/* Primeiro o Bootstrap */
+@import "bootstrap/scss/bootstrap";
+
+/* Depois o PrimeNG */
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+/* Corrigir inputs e botões */
+input,
+button {
+  border-radius: 0.25rem !important;
+  /* Ou o estilo desejado */
+  padding: 0.5rem !important;
+}
+
+/* Estilo do checkbox */
+p-checkbox .p-checkbox-box {
+  border-color: var(--primary-color, #007bff) !important;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+// .p-toast .p-toast-message-error {
+//   background-color: rgba(255, 0, 0, 0.6); /* Vermelho com 80% de opacidade */
+//   color: white;
+// }
+
+// .p-toast .p-toast-message-success {
+//   background-color: rgba(72, 182, 77, 0.6) !important; /* Alterar a opacidade para 80% */
+// }
+
