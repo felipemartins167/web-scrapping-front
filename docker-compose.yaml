@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  angular-app:
+    build:
+      context: ./fms-adm
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./fms-adm:/app
+      - /app/node_modules
+    working_dir: /app
