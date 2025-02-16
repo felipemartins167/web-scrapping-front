@@ -37,6 +37,8 @@ export class ProductsComponent implements OnInit {
   doSearch(event?: any) {
     this.loadingService.show();
     const page = event ? (event.page + 1) : this.first;
+    if (event !== null)
+      this.first = 1;
     this.productService.getAll(page, this.rows, this.search)
       .then((products) => {
         this.loadingService.hide();
