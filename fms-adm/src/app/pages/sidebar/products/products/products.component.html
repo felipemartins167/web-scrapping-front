@@ -3,7 +3,7 @@
         <div class="col-3 md:col-3 xl:col-12 p-2">
             <div class="flex align-items-center gap-2">
                 <input pInputText id="search" aria-describedby="search-help" [(ngModel)]="search" style="flex: 1;" />
-                <p-button label="Buscar" variant="text" [raised]="true" (keydown.enter)="doSearch()" (onClick)="doSearch()"></p-button>
+                <p-button label="Buscar" variant="text" [raised]="true" (keyup.enter)="doSearch()" (onClick)="doSearch()"></p-button>
             </div>
             <small id="search-help">Digite pelo menos 3 letras para iniciar a busca</small>
         </div>
