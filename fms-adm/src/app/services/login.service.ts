@@ -22,10 +22,12 @@ export class LoginService {
       .pipe(
         take(1),
         map(response => {
+          console.log(response);
           if (!response.error) {
-            localStorage.setItem(LocalStorageVariables.tokenRefreshToken, response.data);
+            localStorage.setItem(LocalStorageVariables.tokenRefreshToken, JSON.stringify(response.data));
             return 'Login efetuado com sucesso';
           }
+          console.log(response);
           throw new Error(response.message || 'Erro ao realizar login');
         })
       );

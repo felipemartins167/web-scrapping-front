@@ -51,7 +51,8 @@ export class LoginComponent {
           },
           error: ((err) => {
             this.loadingService.hide();
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: err.error.message });
+            console.log(err);
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: err });
           })
         });
     } else {
