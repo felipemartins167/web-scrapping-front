@@ -1,4 +1,8 @@
 import {
+  NG_VALUE_ACCESSOR,
+  NgControl
+} from "./chunk-RO2P6B42.js";
+import {
   CheckIcon,
   MinusIcon
 } from "./chunk-CA3BN5HE.js";
@@ -6,10 +10,6 @@ import {
   BaseComponent
 } from "./chunk-CP5RGNMY.js";
 import "./chunk-DZ63CRFH.js";
-import {
-  NG_VALUE_ACCESSOR,
-  NgControl
-} from "./chunk-RO2P6B42.js";
 import {
   BaseStyle
 } from "./chunk-VHVI7VA4.js";

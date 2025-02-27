@@ -6,6 +6,7 @@ import { ProductModel } from '../../../../models/product-model';
 
 import { ChartModule } from 'primeng/chart';
 import { DataChartProduct } from '../../../../models/data-chart-product';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-product-details',
@@ -26,7 +27,11 @@ export class ProductDetailsComponent implements OnInit {
   textColorSecondary = '#6c757d';
   surfaceBorder = '#e9ecef';
 
-  constructor(private loadingService: LoadingService, private productService: ProductService, private router: Router, private activateRouter: ActivatedRoute) {
+  constructor(
+    private loadingService: LoadingService, 
+    private productService: ProductService,
+    private activateRouter: ActivatedRoute, 
+    private messageService: MessageService) {
     this.name = this.activateRouter.snapshot.paramMap.get('name')!;
     this.marketPlace = this.activateRouter.snapshot.paramMap.get('marketPlace')!;
   }
@@ -40,14 +45,12 @@ export class ProductDetailsComponent implements OnInit {
     console.log(this.name, this.marketPlace);
 
     this.productService.getByNameMarketPlace(this.name, this.marketPlace)
-      .then((product) => {
-        this.loadingService.hide();
-        if (product.error) {
-
-        } else {
-          this.product = product.data;
-          const labels:any = [];
-          const dataChart:any = [];
+      .subscribe({
+        next: (products: Array<ProductModel>) => {
+          this.loadingService.hide();
+          this.product = products;
+          const labels: any = [];
+          const dataChart: any = [];
           this.product.forEach((item: ProductModel) => {
             labels.push(new Date(item.createdAt).toLocaleDateString('pt-BR'));
             dataChart.push(item.priceTo);
@@ -57,7 +60,7 @@ export class ProductDetailsComponent implements OnInit {
             datasets: [
               {
                 label: 'Valores',
-                data: [1,50,45,58,50],
+                data: [1, 50, 45, 58, 50],
                 fill: false,
                 tension: 0.4
               }
@@ -95,13 +98,13 @@ export class ProductDetailsComponent implements OnInit {
               }
             }
           };
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: (error) => {
+          this.loadingService.hide();
+          console.error('Erro ao recuperar produtos:', error);
+          this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: error });
         }
-      })
-      .catch((err) => {
-        this.loadingService.hide();
-      })
-      .finally(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
   }
 }

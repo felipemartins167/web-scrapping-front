@@ -27,9 +27,9 @@ export class ProductsComponent implements OnInit {
   totalItems: number = 2;
 
   constructor(private loadingService: LoadingService, private productService: ProductService, private router: Router) {
-    
+
   }
-  
+
   ngOnInit(): void {
     this.doSearch();
   }
@@ -40,20 +40,16 @@ export class ProductsComponent implements OnInit {
     if (event == null)
       this.first = 1;
     this.productService.getAll(page, this.rows, this.search)
-      .then((products) => {
-        this.loadingService.hide();
-        if (products.error) {
-          
-        } else {
+      .subscribe({
+        next: (products) => {
+          this.loadingService.hide();
           this.productsList = products.data;
-          this.totalItems = products.totalPage;
-        }
-      })
-      .catch((err) => {
-        this.loadingService.hide();
-      })
-      .finally(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+          this.totalItems = products.totalPage ? products.totalPage : 0;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: ((err) => {
+          this.loadingService.hide();
+        })
       });
   }
 

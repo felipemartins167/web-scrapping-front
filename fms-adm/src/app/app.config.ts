@@ -7,10 +7,12 @@ import Lara from '@primeng/themes/lara';
 
 import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './services/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptors([authInterceptor])),
     MessageService,
     provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),

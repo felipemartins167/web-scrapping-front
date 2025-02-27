@@ -34,17 +34,16 @@ export class UsersComponent implements OnInit {
   async doSearch() {
     this.loadingService.show();
     await this.userService.getAll(this.first, this.rows, this.search)
-      .then((users) => {
-        this.loadingService.hide();
-        if (users.error) {
-
-        } else {
+      .subscribe({
+        next: (users) => {
+          this.loadingService.hide();
           this.userList = users.data;
-          this.totalItems = users.totalPage;
-        }
-      })
-      .catch((err) => {
-        this.loadingService.hide();
+          this.totalItems = users.totalPage ? users.totalPage : 0;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: ((err) => {
+          this.loadingService.hide();
+        })
       });
   }
 }

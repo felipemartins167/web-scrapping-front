@@ -11,12 +11,16 @@ import { LoginModel } from '../../models/login-model';
 import { LoginService } from '../../services/login.service';
 import { LoadingService } from '../../services/loading.service';
 import { Router } from '@angular/router';
+import { ResponseModel } from '../../models/response-model';
+import { TokenRefreshRequest } from '../../models/token-refresh-request';
+import { LocalStorageVariables } from '../../shared/variables/local-storage-variables';
+import { catchError, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ Checkbox, ButtonModule, RippleModule, InputTextModule, ReactiveFormsModule, Toast, Ripple ],
-  providers: [ LoginService ],
+  imports: [Checkbox, ButtonModule, RippleModule, InputTextModule, ReactiveFormsModule, Toast, Ripple],
+  providers: [LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -37,20 +41,18 @@ export class LoginComponent {
       loginModel.password = this.loginForm.get('password')!.value;
       this.loadingService.show();
       this.loginService.login(loginModel)
-        .then((response) => {
-          this.loadingService.hide();
-          if (response) {
-            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado com sucesso.' });
+        .subscribe({
+          next: (response) => {
+            this.loadingService.hide();
+
+            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: response });
             this.router.navigate(['/sidebar']);
-          } else {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível realizar o login, verifique os dados e tente novamente.' });
-          }
-        })
-        .catch((err) => {
-          this.loadingService.hide();
-          if (err.error && err.error.message) {
+
+          },
+          error: ((err) => {
+            this.loadingService.hide();
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: err.error.message });
-          }
+          })
         });
     } else {
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Por favor, insira um login e uma senha válidos para continuar.' });

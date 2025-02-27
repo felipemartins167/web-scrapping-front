@@ -52,7 +52,9 @@
         </div>
         }
     </div>
-    <div class="card flex justify-center">
-        <p-paginator (onPageChange)="doSearch($event)" [first]="first" [rows]="rows" [totalRecords]="totalItems" [rowsPerPageOptions]="[5, 10, 20]" />
-    </div>
+    @if (productsList.length > 0) {
+        <div class="card flex justify-center">
+            <p-paginator (onPageChange)="doSearch($event)" [first]="first" [rows]="rows" [totalRecords]="totalItems" [rowsPerPageOptions]="[5, 10, 20]" />
+        </div>
+    }
 </div>
