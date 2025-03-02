@@ -6,5 +6,5 @@
 
 export const environment = {
   production: true,
-  apiurl: "http://srv727327.hstgr.cloud/service/"
+  apiurl: "http://fmswebscrapping.com.br/service/",
 };

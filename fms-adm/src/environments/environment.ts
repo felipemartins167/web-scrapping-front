@@ -10,7 +10,7 @@
 
 export const environment = {
   production: false,
-  apiurl: "http://srv727327.hstgr.cloud/service/",
+  apiurl: "http://fmswebscrapping.com.br/service/",
   environmentCode: 1
 };
 
