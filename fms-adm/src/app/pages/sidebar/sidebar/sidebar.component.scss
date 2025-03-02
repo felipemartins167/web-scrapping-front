@@ -48,3 +48,12 @@ a {
         margin-left: 280px;
     }
 }
+
+#app-sidebar-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.overflow-y-auto {
+    flex-grow: 1; // Isso faz com que o menu ocupe apenas o espaço necessário
+}
