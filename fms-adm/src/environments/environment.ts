@@ -10,7 +10,7 @@
 
 export const environment = {
   production: false,
-  apiurl: "http://srv727327.hstgr.cloud:5000/",
+  apiurl: "http://srv727327.hstgr.cloud/service/",
   environmentCode: 1
 };
 
