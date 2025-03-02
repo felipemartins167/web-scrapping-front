@@ -10,7 +10,7 @@
 
 export const environment = {
   production: false,
-  apiurl: "http://fmswebscrapping.com.br/service/",
+  apiurl: "https://fmswebscrapping.com.br/service/",
   environmentCode: 1
 };
 
