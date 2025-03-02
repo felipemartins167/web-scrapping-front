@@ -57,3 +57,8 @@ a {
 .overflow-y-auto {
     flex-grow: 1; // Isso faz com que o menu ocupe apenas o espaço necessário
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
