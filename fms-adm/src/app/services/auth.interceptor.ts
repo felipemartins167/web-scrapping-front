@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const authService = inject(LoginService);
   const router = inject(Router);
 
-  const API_BASE_URL = 'http://srv727327.hstgr.cloud:5000/'; // Defina a URL base da sua API
+  const API_BASE_URL = 'https://fmswebscrapping.com.br/'; // Defina a URL base da sua API
 
   // 🔒 Apenas modifica requisições que vão para a API principal
   if (!req.url.startsWith(API_BASE_URL)) {
@@ -48,6 +48,7 @@ const handle401Error = (
     switchMap((newToken) => {
       // 🔄 Atualiza o token armazenado e refaz a requisição original
       authService.setAuthData(newToken);
+
       const newAuthReq = req.clone({
         setHeaders: { Authorization: `Bearer ${newToken.token}` }
       });
