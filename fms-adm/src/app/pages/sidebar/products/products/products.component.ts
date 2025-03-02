@@ -54,7 +54,7 @@ export class ProductsComponent implements OnInit {
   }
 
   doProductDetail(product: ProductModel) {
-    this.router.navigate([`sidebar/products/detail/${product.name}/${product.marketPlace}`]);
+    this.router.navigate([`sidebar/products/detail/${product.id}/${product.marketPlace}`]);
   }
 
 }

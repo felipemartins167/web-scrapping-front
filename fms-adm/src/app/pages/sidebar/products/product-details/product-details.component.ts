@@ -37,14 +37,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.doGetProductByNameMarketPlace();
+    this.doGetProductByIdMarketPlace();
   }
 
-  doGetProductByNameMarketPlace() {
+  doGetProductByIdMarketPlace() {
     this.loadingService.show();
     console.log(this.name, this.marketPlace);
 
-    this.productService.getByNameMarketPlace(this.name, this.marketPlace)
+    this.productService.getByIdMarketPlace(this.name, this.marketPlace)
       .subscribe({
         next: (products: Array<ProductModel>) => {
           this.loadingService.hide();

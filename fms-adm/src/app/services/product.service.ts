@@ -27,14 +27,15 @@ export class ProductService {
       );
   }
 
-  getByNameMarketPlace(name: string, marketPlace: string): Observable<Array<ProductModel>>{
+  getByIdMarketPlace(id: string, marketPlace: string): Observable<Array<ProductModel>>{
     return this.http
-      .get<ResponseModel>(`${this.base_url}api/product/getByNameMarketPlace/v1/{${name}}/{${marketPlace}}`)
+      .get<ResponseModel>(`${this.base_url}api/product/getByIdMarketPlace/v1/{${id}}/{${marketPlace}}`)
       .pipe(
         take(1),
         map((response) => {
           if (!response.error) {
-            return JSON.parse(response.data) as Array<ProductModel>;
+            console.log(response);
+            return response.data as Array<ProductModel>;
           }
           throw new Error(response.message || 'Erro ao recuperar listagem de produtos.');
         })
