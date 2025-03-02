@@ -1,7 +1,13 @@
 <div class="min-h-screen flex surface-ground">
+    <!-- Ícone de menu (visível apenas em telas pequenas) -->
+    <button class="menu-toggle lg:hidden absolute top-4 left-4 z-2 bg-bluegray-800 text-white p-2 rounded"
+        (click)="toggleSidebar()">
+        <i class="pi pi-bars text-2xl"></i>
+    </button>
+
     <div id="app-sidebar-1"
-        class="bg-bluegray-800 h-screen hidden lg:block flex-shrink-0 fixed lg:sticky left-0 top-0 z-1 select-none"
-        style="width:280px">
+        class="bg-bluegray-800 h-screen fixed left-0 top-0 z-50 transition-transform transform lg:translate-x-0"
+        [ngClass]="{'-translate-x-full': !isSidebarVisible, 'translate-x-0': isSidebarVisible}" style="width:280px">
         <div class="flex flex-column h-full">
             <div class="flex align-items-center px-5 bg-bluegray-900 flex-shrink-0" style="height:60px">
                 <img src="assets/images/logo_text_175x60.png" alt="Image" height="60">
@@ -92,11 +98,7 @@
             </div>
         </div>
     </div>
-    <div class="min-h-screen flex flex-column relative flex-auto">
-        <div class="p-5 flex flex-column flex-auto">
-            <!-- <div class="border-2 border-dashed surface-border border-round surface-section flex-auto"> -->
-            <router-outlet></router-outlet>
-            <!-- </div> -->
-        </div>
+    <div class="min-h-screen flex flex-column flex-auto content p-5">
+        <router-outlet></router-outlet> <!-- ✅ Área onde o conteúdo do dashboard será renderizado -->
     </div>
 </div>
