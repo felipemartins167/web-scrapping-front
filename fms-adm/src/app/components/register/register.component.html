@@ -1,0 +1,95 @@
+<p-dialog [(visible)]="displayModal" (onHide)="close()" [modal]="true" [closeOnEscape]="true" [dismissableMask]="true"
+    [style]="{width: '600px'}" header="Cadastro de Usuário">
+
+
+    <div class="p-4">
+        <ng-container [ngSwitch]="activeStepIndex">
+
+            <div *ngSwitchCase="0">
+                <!-- Conteúdo do Step 1 -->
+                <h3>Registro</h3>
+                <form [formGroup]="loginForm">
+                    <label for="fullname" class="block text-900 font-medium mb-2">Nome *</label>
+                    <input id="fullname" formControlName="fullname" type="text" placeholder="Nome" pInputText
+                        class="w-full mb-3 p-3">
+                    @if (loginForm.get('fullname')?.invalid && loginForm.get('fullname')?.touched) {
+                    <div class="error-message">
+                        Informe o nome e sobrenome válidos
+                    </div>
+                    }
+                    <label for="email" class="block text-900 font-medium mb-2">E-mail *</label>
+                    <input id="email" formControlName="email" type="text" placeholder="E-mail" pInputText
+                        class="w-full mb-3 p-3">
+                    @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                    <div class="error-message">
+                        E-mail inválido.
+                    </div>
+                    }
+                    <label for="password" class="block text-900 font-medium mb-2">Senha *</label>
+                    <input id="password" formControlName="password" type="password" placeholder="Senha" pInputText
+                        class="w-full mb-3 p-3">
+                    @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                    @if (loginForm.get('password')?.errors?.["length"]) {
+                    <div class="error-message">
+                        A senha deve ter entre 5 e 20 caracteres.
+                    </div>
+                    } @else if (loginForm.get('password')?.errors?.["uppercase"]) {
+                    <div class="error-message">
+                        A senha precisa incluir pelo menos uma letra maiúscula.
+                    </div>
+                    } @else if (loginForm.get('password')?.errors?.["lowercase"]) {
+                    <div class="error-message">
+                        A senha precisa incluir pelo menos uma letra minúscula.
+                    </div>
+                    } @else if (loginForm.get('password')?.errors?.["number"]) {
+                    <div class="error-message">
+                        A senha precisa incluir pelo menos um número.
+                    </div>
+                    } @else if (loginForm.get('password')?.errors?.["specialChar"]) {
+                    <div class="error-message">
+                        A senha precisa incluir pelo menos um caractere especial, como !#$%.
+                    </div>
+                    }
+                    }
+                </form>
+            </div>
+
+            <div *ngSwitchCase="1">
+                <!-- Conteúdo do Step 2 -->
+                <h3>Confirmação</h3>
+                <p>Confirme os seus dados...</p>
+                <p>Nome: {{loginForm.get('fullname')?.value}}</p>
+                <p>E-mail: {{loginForm.get('email')?.value}}</p>
+            </div>
+
+            <div *ngSwitchCase="2">
+                <!-- Conteúdo do Step 3 -->
+                <h3>Finalização</h3>
+                <p>Tudo pronto!</p>
+                <p>
+                    Ao clicar em <strong>Finalizar</strong>, você declara que leu e aceita nossos
+                    <a href="">Termos de Uso</a> e nossa
+                    <a href="">Política de Privacidade</a>. Você também receberá um e-mail para validar sua conta e
+                    aproveitar melhor nossos serviços.
+                </p>
+                <p>Agradecemos seu cadastro e ficamos felizes em ter você conosco!</p>
+            </div>
+
+
+        </ng-container>
+    </div>
+
+    <p-steps [model]="steps" [(activeIndex)]="activeStepIndex" [styleClass]="aLinkStyle"></p-steps>
+    <ng-template pTemplate="footer">
+        <button pButton label="Voltar" icon="pi pi-arrow-left" class="p-button-text" (click)="prevStep()"
+            [disabled]="activeStepIndex === 0"></button>
+        @if (activeStepIndex !== steps.length - 1) {
+        <button pButton label="Próximo" icon="pi pi-arrow-right" (click)="nextStep()"
+            [disabled]="activeStepIndex === steps.length - 1"></button>
+        }
+        @if (activeStepIndex === steps.length - 1) {
+        <button pButton label="Finalizar" icon="pi pi-check" (click)="finish()"></button>
+
+        }
+    </ng-template>
+</p-dialog>

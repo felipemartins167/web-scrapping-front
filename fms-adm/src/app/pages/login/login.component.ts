@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Checkbox } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { Ripple, RippleModule } from 'primeng/ripple';
@@ -11,21 +11,21 @@ import { LoginModel } from '../../models/login-model';
 import { LoginService } from '../../services/login.service';
 import { LoadingService } from '../../services/loading.service';
 import { Router } from '@angular/router';
-import { ResponseModel } from '../../models/response-model';
-import { TokenRefreshRequest } from '../../models/token-refresh-request';
-import { LocalStorageVariables } from '../../shared/variables/local-storage-variables';
-import { catchError, switchMap } from 'rxjs';
+import { RegisterComponent } from "../../components/register/register.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [Checkbox, ButtonModule, RippleModule, InputTextModule, ReactiveFormsModule, Toast, Ripple],
+  imports: [Checkbox, ButtonModule, RippleModule, InputTextModule, ReactiveFormsModule, Toast, Ripple, RegisterComponent],
   providers: [LoginService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  displayModalRegister: boolean = false;
+
+  isAdmin: boolean = false;
 
   constructor(private messageService: MessageService, private loginService: LoginService, private loadingService: LoadingService, private router: Router) {
     this.loginForm = new FormGroup({
@@ -34,13 +34,24 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    const actualRoute = this.router.url; // obtém diretamente a URL atual
+    console.log(actualRoute);
+
+    if (actualRoute.includes('/admin')) {
+      this.isAdmin = true;
+    }
+  }
+
   doLogin() {
     if (this.loginForm.valid) {
       const loginModel = new LoginModel();
       loginModel.email = this.loginForm.get('email')!.value;
       loginModel.password = this.loginForm.get('password')!.value;
       this.loadingService.show();
-      this.loginService.login(loginModel)
+      const environmentPage = this.isAdmin ? 1 : 3;
+      localStorage.setItem('environment', environmentPage.toString());
+      this.loginService.login(loginModel, environmentPage)
         .subscribe({
           next: (response) => {
             this.loadingService.hide();
@@ -56,8 +67,14 @@ export class LoginComponent {
           })
         });
     } else {
+      this.loginForm.markAsTouched();
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Por favor, insira um login e uma senha válidos para continuar.' });
     }
+  }
+
+  showRegister() {
+    console.log('Passou para mostrar os registros: ', this.displayModalRegister);
+    this.displayModalRegister = true;
   }
 
 }

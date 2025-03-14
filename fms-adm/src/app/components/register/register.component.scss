@@ -1,0 +1,16 @@
+:host {
+    display: block;
+}
+
+h3 {
+    margin-bottom: 15px;
+}
+
+input[pInputText] {
+    width: 100%;
+}
+
+::ng-deep .aLinkStyle.p-steps .p-steps-item .p-steps-item-link,
+::ng-deep .aLinkStyle.p-steps .p-steps-item .p-steps-item-link span.p-steps-item-label {
+    text-decoration: none !important;
+}

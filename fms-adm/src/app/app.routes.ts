@@ -7,5 +7,9 @@ export const routes: Routes = [
   {
     path: 'sidebar',
     loadChildren: () => import('./pages/sidebar/sidebar.module').then(m => m.SidebarModule),
+  },
+  {
+    path: 'login/admin',
+    component: LoginComponent
   }
 ];

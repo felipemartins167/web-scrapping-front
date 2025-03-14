@@ -6,6 +6,7 @@ import { catchError, map, Observable, take, throwError } from 'rxjs';
 import { TokenRefreshRequest } from '../models/token-refresh-request';
 import { LocalStorageVariables } from '../shared/variables/local-storage-variables';
 import { ResponseModel } from '../models/response-model';
+import { RegisterModel } from '../models/register-model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  login(body: LoginModel): Observable<string> {
+  login(body: LoginModel, environment: number): Observable<string> {
     return this.http
-      .post<ResponseModel>(`${this.base_url}api/auth/v1/login/${environment.environmentCode}`, body)
+      .post<ResponseModel>(`${this.base_url}api/auth/v1/login/${environment}`, body)
       .pipe(
         take(1),
         map(response => {
@@ -33,6 +34,23 @@ export class LoginService {
       );
   }
 
+  register(body: RegisterModel): Observable<string> {
+    return this.http
+      .post<ResponseModel>(`${this.base_url}api/auth/v1/user`, body)
+      .pipe(
+        take(1),
+        map(response => {
+          console.log(response);
+          if (!response.error) {
+            localStorage.setItem(LocalStorageVariables.tokenRefreshToken, JSON.stringify(response.data));
+            return 'Usuário registrado com sucesso';
+          }
+          console.log(response);
+          throw new Error(response.message || 'Erro ao realizar registro de usuário');
+        })
+      );
+  }
+
   resetPassword(email: string): Observable<string> {
     return this.http
       .post<ResponseModel>(`${this.base_url}api/auth/v1/reset/password/${email}`, {})
@@ -43,6 +61,26 @@ export class LoginService {
             return response.message || 'Solicitação de redefinição enviada com sucesso.';
           }
           throw new Error(response.message || 'Erro ao redefinir senha');
+        })
+      );
+  }
+
+  verifyEmailExists(email: string): Observable<string> {
+    return this.http
+      .get<ResponseModel>(`${this.base_url}api/auth/v1/verify/email/${email}`, {})
+      .pipe(
+        take(1),
+        map(response => {
+          console.log(response);
+          if (!response.error) {
+            return response.message || 'E-mail validado com sucesso.';
+          }
+          console.log(response.message);
+          throw new Error(response.message || 'Erro ao verificar e-mail do usuário!');
+        }),
+        catchError((error: any) => {
+          console.error('Erro ao verificar e-mail do usuário: ', error);
+          return throwError(() => new Error(error.message || 'Erro ao verificar e-mail do usuário!'));
         })
       );
   }

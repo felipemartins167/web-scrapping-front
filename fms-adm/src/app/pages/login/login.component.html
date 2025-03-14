@@ -4,8 +4,10 @@
         <div class="mb-5">
             <img src="/assets/images/logo_icon.png" alt="Ícone Logo" height="50" class="mb-3">
             <div class="text-900 text-3xl font-medium mb-3">Bem-vindo</div>
+            @if (!isAdmin) {
             <span class="text-600 font-medium mr-2">Não possui conta?</span>
-            <a class="font-medium no-underline text-blue-500 cursor-pointer">Criar conta!</a>
+            <a class="font-medium no-underline text-blue-500 cursor-pointer" (click)="showRegister()">Criar conta!</a>
+            }
         </div>
         <div>
             <form [formGroup]="loginForm">
@@ -14,7 +16,7 @@
                     class="w-full mb-3 p-3">
                 @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
                 <div class="error-message">
-                    E-mail inválida.
+                    E-mail inválido.
                 </div>
                 }
 
@@ -59,3 +61,5 @@
     <div class="hidden md:block w-6 bg-no-repeat bg-cover" style="background-image: url('/assets/images/logo.png')">
     </div>
 </div>
+
+<app-register [(displayModal)]="displayModalRegister"></app-register>
