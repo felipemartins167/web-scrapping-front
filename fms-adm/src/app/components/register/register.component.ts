@@ -109,7 +109,7 @@ export class RegisterComponent {
   finish() {
     // Finalização da ação aqui
     this.loadingService.show();
-    const registerModel = new RegisterModel(this.loginForm.get('fullname')?.value, this.loginForm.get('email')?.value, this.loginForm.get('password')?.value, 1);
+    const registerModel = new RegisterModel(this.loginForm.get('fullname')?.value, this.loginForm.get('email')?.value, this.loginForm.get('password')?.value, 3);
     this.loginService.register(registerModel)
       .subscribe({
         next: (response) => {
