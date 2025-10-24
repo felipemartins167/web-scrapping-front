@@ -9,10 +9,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const authService = inject(LoginService);
   const router = inject(Router);
 
-  const API_BASE_URL = 'https://fmswebscrapping.com.br/'; // Defina a URL base da sua API
+  const API_BASE_URL = 'https://fmswebscrapping.com.br/';
 
   // 🔒 Apenas modifica requisições que vão para a API principal
-  if (!req.url.startsWith(API_BASE_URL)) {
+  if (!req.url.startsWith(API_BASE_URL) || req.url.includes('api/auth/v1/login/')) {
     return next(req); // Se não for da API, segue sem modificar
   }
 

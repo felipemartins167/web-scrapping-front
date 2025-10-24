@@ -23,7 +23,7 @@ export class LoginService {
       .pipe(
         take(1),
         map(response => {
-          console.log(response);
+          console.log(response.data);
           if (!response.error) {
             localStorage.setItem(LocalStorageVariables.tokenRefreshToken, JSON.stringify(response.data));
             return 'Login efetuado com sucesso';

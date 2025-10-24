@@ -55,15 +55,12 @@ export class LoginComponent implements OnInit {
         .subscribe({
           next: (response) => {
             this.loadingService.hide();
-
             this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: response });
             this.router.navigate(['/sidebar']);
-
           },
           error: ((err) => {
             this.loadingService.hide();
-            console.log(err);
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: err });
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: err.error.data.errorMessage });
           })
         });
     } else {
