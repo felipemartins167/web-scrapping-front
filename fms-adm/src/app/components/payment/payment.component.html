@@ -1,0 +1,181 @@
+<p-dialog [(visible)]="displayModal" (onHide)="close()" [modal]="true" [closeOnEscape]="true" [dismissableMask]="true"
+    [draggable]="false" [resizable]="false" [style]="{ width: '80%', maxWidth: '95vw' }" header="Pagamento">
+    <form [formGroup]="billingDetails">
+        <div class="p-fluid">
+            <div class="mb-3">
+                <h3 class="m-0">Resumo do pagamento</h3>
+                <small class="text-color-secondary">
+                    Confirme os dados antes de finalizar.
+                </small>
+            </div>
+
+            <div class="p-3 border-round surface-100 mb-3">
+                <div class="flex justify-content-between mb-2">
+                    <span class="font-medium">Descrição</span>
+                    <!-- binding opcional -->
+                    <span>{{ paymentDescription || 'Pagamento no sistema' }}</span>
+                </div>
+                <div class="flex justify-content-between mb-2">
+                    <span class="font-medium">Valor</span>
+                    <span class="font-bold">
+                        {{ paymentAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+                    </span>
+                </div>
+                <div class="flex justify-content-between">
+                    <span class="font-medium">Identificador</span>
+                    <!-- Ex: ID da venda / OS / etc -->
+                    <span>{{ paymentReference || 'N/A' }}</span>
+                </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- FORMA DE PAGAMENTO (APENAS CARTÃO DE CRÉDITO POR ENQUANTO) -->
+            <div class="mb-3">
+                <h4 class="m-0">Forma de pagamento</h4>
+                <small class="text-color-secondary">
+                    No momento apenas cartão de crédito está disponível.
+                </small>
+            </div>
+
+            <div class="p-3 border-round surface-100 mb-3">
+                <div class="flex align-items-center">
+                    <p-radioButton value="credit-card" formControlName="paymentMethod"></p-radioButton>
+                    <label class="ml-2 font-medium">
+                        Cartão de crédito
+                    </label>
+                </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- DADOS DO CARTÃO -->
+            <div class="mb-3">
+                <h4 class="m-0">Dados do cartão</h4>
+                <small class="text-color-secondary">
+                    Os dados do cartão são processados com segurança pelo Stripe.
+                </small>
+            </div>
+
+            <div class="grid">
+                <!-- NOME IMPRESSO NO CARTÃO -->
+                <div class="col-12 mb-3">
+                    <label for="cardHolder" class="font-medium mb-1 block">
+                        Nome impresso no cartão
+                    </label>
+                    <input pInputText id="cardHolder" type="text" placeholder="Ex: FULANO DE TAL" autocomplete="cc-name"
+                        required formControlName="cardholderName" />
+                </div>
+
+                <!-- ELEMENT DO STRIPE (número + validade + CVC em um único campo) -->
+                <div class="col-12 mb-3">
+                    <label class="font-medium mb-1 block">
+                        Dados do cartão
+                    </label>
+
+                    <!-- Container onde o Stripe vai montar o Element -->
+                    <div #cardElement id="card-element" class="stripe-card-element surface-0 p-2 border-round"
+                        style="border: 1px solid var(--surface-300); min-height: 40px;"></div>
+
+                    <small id="card-errors" class="p-error mt-1 block" *ngIf="cardError">
+                        {{ cardError }}
+                    </small>
+                </div>
+
+                <!-- PARCELAMENTO -->
+                <div class="col-12 mb-3">
+                    <label for="installments" class="font-medium mb-1 block">
+                        Parcelamento
+                    </label>
+                    <p-dropdown formControlName="installments" inputId="installments" [options]="installmentOptions"
+                        optionLabel="value" optionValue="value" placeholder="Selecione" [showClear]="false"
+                        appendTo="body" required>
+                    </p-dropdown>
+                </div>
+
+                <!-- OPÇÃO DE SALVAR CARTÃO -->
+                <div class="col-12 mb-2">
+                    <p-toggleswitch formControlName="saveCard" inputId="saveCard"></p-toggleswitch>
+                    <label for="saveCard" class="ml-2">
+                        Salvar cartão para próximos pagamentos
+                    </label>
+                </div>
+
+                <!-- ENDEREÇO DE COBRANÇA (OPCIONAL) -->
+                <form [formGroup]="billingAddress" class="col-12 p-fluid">
+                    <div class="col-12 mt-2">
+                        <p-divider align="left">
+                            <span class="font-medium text-sm">
+                                Endereço de cobrança (opcional)
+                            </span>
+                        </p-divider>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label for="billingZipCode" class="font-medium mb-1 block">
+                            CEP
+                        </label>
+                        <input pInputText formControlName="billingZipCode" id="billingZipCode" type="text"
+                            placeholder="00000-000" maxlength="9" />
+                    </div>
+
+                    <div class="col-8 mb-3">
+                        <label for="billingStreet" class="font-medium mb-1 block">
+                            Logradouro
+                        </label>
+                        <input pInputText formControlName="billingStreet" id="billingStreet" type="text"
+                            placeholder="Rua / Avenida" />
+                    </div>
+
+                    <div class="col-4 mb-3">
+                        <label for="billingNumber" class="font-medium mb-1 block">
+                            Número
+                        </label>
+                        <input pInputText formControlName="billingNumber" id="billingNumber" type="text"
+                            placeholder="123" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label for="billingDistrict" class="font-medium mb-1 block">
+                            Bairro
+                        </label>
+                        <input pInputText formControlName="billingDistrict" id="billingDistrict" type="text" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label for="billingCity" class="font-medium mb-1 block">
+                            Cidade
+                        </label>
+                        <input pInputText formControlName="billingCity" id="billingCity" type="text" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label for="billingState" class="font-medium mb-1 block">
+                            UF
+                        </label>
+                        <input pInputText formControlName="billingState" id="billingState" type="text" maxlength="2"
+                            placeholder="SP" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label for="billingComplement" class="font-medium mb-1 block">
+                            Complemento
+                        </label>
+                        <input pInputText formControlName="billingComplement" id="billingComplement" type="text" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+
+    <!-- RODAPÉ DO DIÁLOGO: BOTÕES DE AÇÃO -->
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2 w-full">
+            <button pButton type="button" label="Cancelar" class="p-button-text" (click)="onCancelPayment()"></button>
+
+            <button pButton type="button" label="Confirmar pagamento" [disabled]="isProcessingPayment"
+                (click)="onConfirmPayment()">
+            </button>
+        </div>
+    </ng-template>
+</p-dialog>
