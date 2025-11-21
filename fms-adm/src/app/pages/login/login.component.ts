@@ -70,7 +70,6 @@ export class LoginComponent implements OnInit {
   }
 
   showRegister() {
-    console.log('Passou para mostrar os registros: ', this.displayModalRegister);
     this.displayModalRegister = true;
   }
 

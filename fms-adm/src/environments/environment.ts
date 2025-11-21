@@ -11,7 +11,8 @@
 export const environment = {
   production: false,
   apiurl: "https://fmswebscrapping.com.br/service/",
-  environmentCode: 1
+  environmentCode: 1,
+  stripeKey: 'pk_test_51RziVfKhhHzbjpTkWMBmDrT73pclReOZVifmFxJ7UloArk7JvOygtBK8UUrP5DUSyysz2ni7Kzm1H2YNnmLzif1C00LzFg6fcb'
 };
 
 /*

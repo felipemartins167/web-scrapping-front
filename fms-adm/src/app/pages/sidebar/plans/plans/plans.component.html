@@ -1,0 +1,155 @@
+<div class="subscription-page p-grid p-justify-center p-mt-4 p-px-3">
+
+  <!-- BLOCO: Título e descrição genérica -->
+  <div class="p-col-12 p-md-8">
+    <p-card>
+      <ng-template pTemplate="title">
+        Vantagens de ser assinante
+      </ng-template>
+
+      <ng-template pTemplate="subtitle">
+        Tenha acesso a recursos exclusivos, suporte prioritário e muito mais.
+      </ng-template>
+
+      <p class="p-mt-2">
+        Ao assinar, você desbloqueia funcionalidades avançadas da plataforma, 
+        garantindo uma experiência mais completa, profissional e personalizada.
+      </p>
+
+      <ul class="p-pl-3 p-mt-2">
+        <li>Acesso a conteúdos e funcionalidades exclusivos para assinantes;</li>
+        <li>Atualizações constantes com melhorias e novidades;</li>
+        <li>Suporte técnico prioritário;</li>
+        <li>Maior controle e flexibilidade sobre seus dados e configurações;</li>
+        <li>Possibilidade de cancelamento da assinatura de forma simples e rápida.</li>
+      </ul>
+    </p-card>
+  </div>
+
+  <!-- BLOCO: Seleção de plano -->
+  <div class="p-col-12 p-md-8 p-mt-3">
+    <p-card>
+      <ng-template pTemplate="title">
+        Escolha o seu plano
+      </ng-template>
+
+      <div class="p-field p-mt-2">
+        <label for="planDropdown" class="p-d-block p-mb-2">Selecione um plano para ver os detalhes</label>
+
+        <!-- Dropdown de planos -->
+        <p-dropdown
+          [style]="{ left: '10px' }"
+          inputId="planDropdown"
+          [options]="plans"
+          optionLabel="name"
+          placeholder="Selecione um plano"
+          [(ngModel)]="selectedPlan"
+          (onChange)="onPlanChange($event.value)"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+
+      <!-- Detalhes do plano selecionado -->
+      <div *ngIf="selectedPlan" class="p-mt-4">
+        <p-card>
+          <ng-template pTemplate="title">
+            {{ selectedPlan.name }}
+          </ng-template>
+
+          <p class="p-mb-2">
+            {{ selectedPlan.description }}
+          </p>
+
+          <div class="p-d-flex p-flex-column p-flex-md-row p-jc-between p-ai-center p-mt-2">
+            <div>
+              <p class="p-mb-1">
+                <strong>Valor:</strong>
+                {{ selectedPlan.price | currency:'BRL':'symbol-narrow':'1.2-2' }}
+              </p>
+              <p class="p-mb-1">
+                <strong>Duração:</strong>
+                {{ selectedPlan.duration }} meses
+              </p>
+            </div>
+
+            <div class="p-mt-3 p-mt-md-0">
+              <button
+                pButton
+                type="button"
+                label="Assinar agora"
+                icon="pi pi-check"
+                class="p-button-success"
+                (click)="displaySubscribeDialog = true">
+                Assinar agora
+              </button>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Mensagem quando nenhum plano estiver selecionado -->
+      <div *ngIf="!selectedPlan" class="p-mt-3">
+        <p class="p-text-secondary">
+          Nenhum plano selecionado. Escolha um plano no dropdown acima para visualizar os detalhes.
+        </p>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- MODAL: Confirmação da assinatura -->
+  <p-dialog
+    header="Confirmar assinatura"
+    [(visible)]="displaySubscribeDialog"
+    [modal]="true"
+    [closable]="true"
+    [style]="{ width: '400px' }"
+    [baseZIndex]="10000"
+    [draggable]="false"
+    *ngIf="selectedPlan">
+
+    <div class="p-fluid">
+      <p class="p-mb-3">
+        Você está prestes a assinar o plano:
+      </p>
+
+      <ul class="p-pl-3">
+        <li><strong>Nome:</strong> {{ selectedPlan.name }}</li>
+        <li><strong>Descrição:</strong> {{ selectedPlan.description }}</li>
+        <li>
+          <strong>Valor:</strong>
+          {{ selectedPlan.value | currency:'BRL':'symbol-narrow':'1.2-2' }}
+        </li>
+        <li><strong>Duração:</strong> {{ selectedPlan.duration }} meses</li>
+      </ul>
+
+      <p class="p-mt-3">
+        Confirme para prosseguir com a assinatura.
+      </p>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-danger"
+        (click)="displaySubscribeDialog = false">
+        Cancelar
+      </button>
+
+      <button
+        pButton
+        type="button"
+        label="Confirmar"
+        icon="pi pi-check"
+        class="p-button-success"
+        (click)="confirmSubscription()">
+        Confirmar
+      </button>
+    </ng-template>
+  </p-dialog>
+
+</div>
+
+<app-payment [(displayModal)]="displayPaymentDialog" />
